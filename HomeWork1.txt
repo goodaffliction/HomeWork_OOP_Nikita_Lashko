@@ -1,0 +1,127 @@
+#include <iostream>
+#include <cstdint>
+
+//class for task 1
+class power {
+private:
+    int var1;
+    int var2;
+public:
+    power() :var1(5), var2(2) {}
+    void set(){
+        std::cout << "Enter first number: ";
+        std::cin >> var1;
+        std::cout << std::endl;
+        std::cout << "Enter second number: ";
+        std::cin >> var2;
+        std::cout << std::endl;
+    }
+    void calculate() {
+        int a = var1;
+        for (int i = 1; i < var2; ++i) {
+            var1 *= a;
+        }
+        std::cout << "Result = " << var1 << std::endl;
+    }
+};
+
+//class for task 2
+class RGBA {
+private:
+    std::uint8_t m_red, m_green, m_blue, m_alpha;
+public:
+    RGBA() :m_red(0), m_green(0), m_blue(0), m_alpha(255) {}
+    RGBA(std::uint8_t red, std::uint8_t green, std::uint8_t blue, std::uint8_t alpha)  {
+        m_red = red;
+        m_green = green;
+        m_blue = blue;
+        m_alpha = alpha;
+    }
+    void print() {
+        std::cout << "Red: " << (int)m_red << std::endl;
+        std::cout << "Green: " << (int)m_green << std::endl;
+        std::cout << "Blue: " << (int)m_blue << std::endl;
+        std::cout << "Alpha: " << (int)m_alpha << std::endl;
+    }
+};
+
+//class for task 3
+class Stack {
+private:
+    int cursor = -1;
+    int stack[10];
+    int stackSize;
+public:
+    Stack() {
+        for (int i = 0; i < 10; i++) {
+            stack[i] = 0;
+        }
+        stackSize = 0;
+    }
+    void reset() {
+        for (int i = 0; i < 10; i++) {
+            stack[i] = 0;
+        }
+        stackSize = 0;
+    }
+    bool push(int data) {
+        if (cursor < 10) {
+            stack[++cursor] = data;
+            stackSize++;
+            return true;
+        }
+        else {
+            std::cout << "Stack overflow!" << std::endl;
+            return false;
+        }
+    }
+    int pop() {
+        if (cursor != -1) {
+            stackSize--;
+            stack[cursor] = 0;
+            return stack[cursor--];
+        }
+        else {
+            printf("%s \n", "Stack is empty!");
+            return -1;
+        }
+    }
+    void print() {
+        std::cout << "( ";
+        for (int i = 0; i < 10; i++) {
+            std::cout << stack[i] << " ";
+        }
+        std::cout << ")" << std::endl;
+        std::cout << "Count of the stack elements: " << stackSize << std::endl;;
+    }
+};
+
+
+int main(){
+    power task1;
+    task1.set();
+    task1.calculate();
+    std::cout << std::endl;
+
+    RGBA task2(70, 35, 45, 200);
+    task2.print();
+    std::cout << std::endl;
+
+    Stack stack;
+    stack.reset();
+    stack.print();
+
+    stack.push(3);
+    stack.push(7);
+    stack.push(5);
+    stack.print();
+
+    stack.pop();
+    stack.print();
+
+    stack.pop();
+    stack.pop();
+    stack.print();
+
+    return 0;
+}
