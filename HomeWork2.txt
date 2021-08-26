@@ -1,0 +1,161 @@
+#include <iostream>
+
+//-------Task1-------
+class Person {
+public:
+	std::string name;
+	int age;
+	std::string gender;
+	int weight;
+
+	Person() : name(""), age(0), gender(""), weight(0) {}
+	
+	void setPerson(std::string p_name, int p_age, std::string p_gender, int p_weight) {
+		name = p_name;
+		age = p_age;
+		gender = p_gender;
+		weight = p_weight;
+	}
+
+	void printPerson() {
+		std::cout << "Name: " << name << std::endl;
+		std::cout << "Age: " << age << std::endl;
+		std::cout << "Gender: " << gender << std::endl;
+		std::cout << "Weight: " << weight << std::endl;
+	}
+};
+
+class Student : public Person {
+public:
+	int yearOfStudy;
+	static int countOfStudents;
+	Student() :yearOfStudy(2010) {
+		countOfStudents++;
+	}
+	void setYear(int s_year) {
+		yearOfStudy = s_year;
+	}
+	void printStudent(Student* obj_student) {
+		obj_student->printPerson();
+		std::cout << "Year of study: " << obj_student->yearOfStudy << std::endl;
+	}
+	void printCountOfStudent() {
+		std::cout << "Count of students: " << countOfStudents << std::endl;
+	}
+};
+
+int Student::countOfStudents = 0;
+
+//-------Task2-------
+class Fruit {
+public:
+	std::string name; 
+	std::string color;
+
+	Fruit(std::string f_name = "", std::string f_color = "") :name(f_name), color(f_color) {}
+
+	std::string getName() const{
+		return name;
+	}
+	std::string getColor() const{
+		return color;
+	}
+};
+
+class Apple : public Fruit {
+public:
+	Apple(std::string a_color) {
+		color = a_color;
+		name = "apple";
+	}
+};
+
+class Banana : public Fruit {
+public:
+	Banana(){
+		name = "banana";
+		color = "yellow";
+	}
+};
+
+class GrannySmith : public Apple {
+public:
+	GrannySmith() : Apple(""){
+		name = "Granny Smith apple";
+		color = "green";
+	}
+};
+
+
+int main()
+{
+	//For task 1
+	Student first;
+	first.setPerson("Ivan", 25, "Male", 80);
+	first.setYear(2021);
+
+	Student second;
+	second.setPerson("Petr", 27, "Male", 75);
+	second.setYear(2021);
+
+	Student third;
+	third.setPerson("Oleg", 24, "Male", 85);
+	third.setYear(2021);
+
+	Student forth;
+	forth.setPerson("Maria", 26, "Female", 55);
+	forth.setYear(2021);
+
+	first.printCountOfStudent();
+	first.printStudent(&forth);
+
+	//For task 2
+	Apple a("red");
+	Banana b;
+	GrannySmith c;
+
+	std::cout << "My " << a.getName() << " is " << a.getColor() << ".\n";
+	std::cout << "My " << b.getName() << " is " << b.getColor() << ".\n";
+	std::cout << "My " << c.getName() << " is " << c.getColor() << ".\n";
+
+	return 0;
+}
+
+// Task 3
+//С правилами ознакомился. Только тут встает вопрос, сколько колод и сколько игроков будет в игре. 
+//Можно сделать так, чтобы в начале игры можно было выбрать количество колод и игроков.
+//Чтобы вести счет колод и чтобы не выпадала рандомная карта, нужно задать класс карта с полями: 
+//колчество очков, достоинство карты и ее масть. Все эти значения можно описать перечислениями.
+
+//int arr_point[11] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}; 
+//enum e_dignity {TWO, THREE, .. KING, ACE};
+//enum e_suit {DIAMONDS, HEARTS, CLUBS, SPADES};
+
+//class bj_card {
+//	int c_point;
+//	e_dignity c_dignity;
+//	e_suit c_suit;
+//};
+//Далее создать класс колода. Класс создается по причине того, что в игре может быть несколько колод.
+//Класс колоды будет содержать динамический массив типа созданного ранее класса карт и счетчик количества карт.
+//В начале игры после раздачи в зависимости от количества игроков, будет вычитываться от одной колоды количество карт,
+//а из массива будут удаляться карты которые оказались на столе. Класс колоды нужен, чтобы во время партии с одной колоды 
+//не выпадали одинаковые карты. Также можно ввести правило: Если в колоде осталось прмерно одна треть, то ввести в игру новую 
+//полную колоду, а старую удалить. Если закончились все колоды, то перемешать их и ввести в игру. То есть обновить количество 
+//полных колод.
+//
+//Также нужно будет создать класс игрока. Предположим, игра будет как в жизни с фишками. Поля класса игрока будут
+//следующими: имя игрока, количество фишек, ставка, количество очков карт на руках игрока.
+//
+//class player {
+//	string p_name;
+//	int p_chips;
+//	int p_bet;
+//	int p_points;
+//};
+//
+//я подозреваю, что будет реализована игра против ИИ. Сначала игроки делают ставку, затем получают карты на руки. Если у игрока блекджек - 
+//комбинация туз+кртинка(либо 10), то автоматически выигрыш, вся сумма уходит победителю. 
+//Если такая комбинация у обоих игроков, то ничья. В обычном случае, у игрока есть случаи: попросить еще карту, либо остановиться.
+//Если у игрока перебор, он проигрывает. После добора у игроков сравниваются их поля p_points и у кого больше, тот выигрывает.
+//Игра будет идти пока один из игроков не станет банкротом.
