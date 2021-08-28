@@ -1,0 +1,224 @@
+#include <iostream>
+
+//Task 1----------------------------------
+const float PI = 3.14;
+
+class Figure {
+public:
+    virtual float area() = 0;
+};
+
+class Parallelogram : public Figure{
+    float p_a;
+    float p_h;
+public:
+    Parallelogram(float x, float y) : p_a(x), p_h(y) {};
+    float area() override {
+        return (p_a * p_h);
+    }
+};
+
+class Circle : public Figure {
+    float p_R;
+public:
+    Circle(float x) : p_R(x){};
+    float area() override {
+        return (PI * p_R * p_R);
+    }
+};
+
+class  Rectangle : public Parallelogram {
+    float p_a;
+    float p_b;
+public:
+    Rectangle(float x, float y) : Parallelogram(x, y) {
+        p_a = x;
+        p_b = y;
+    };
+    float area() override {
+        return (p_a * p_b);
+    }
+};
+
+class  Square : public Parallelogram {
+    float p_a;
+public:
+    Square(float x) : Parallelogram(x, 0) {
+        p_a = x;
+    };
+    float area() override {
+        return (p_a * p_a);
+    }
+};
+
+class  Rhombus : public Parallelogram {
+    float p_a;
+    float p_h;
+public:
+    Rhombus(float x, float y) : Parallelogram(x, y) {
+        p_a = x;
+        p_h = y;
+    };
+    float area() override {
+        return (p_a * p_h);
+    }
+};
+
+//Task 2----------------------------------
+class Car {
+protected:
+    std::string company;
+    std::string model;
+public:
+    Car(std::string comp, std::string mod) : company(comp), model(mod) {
+        std::cout << company << " - Car class" << std::endl;
+        std::cout << model << " - Car class" << std::endl;
+    };
+};
+
+class PassengerCar : virtual public Car{
+public:
+    PassengerCar(std::string comp, std::string mod) : Car(comp, mod) {
+        std::cout << comp << " - PassengerCar class" << std::endl;
+        std::cout << mod << " - PassengerCar class" << std::endl;
+    };
+};
+
+class Bus : virtual public Car {
+public:
+    Bus(std::string comp, std::string mod) : Car(comp, mod) {
+        std::cout << comp << " - Bus class" << std::endl;
+        std::cout << mod << " - Bus class" << std::endl;
+    };
+};
+
+class Minivan : public PassengerCar, public Bus {
+public:
+    Minivan(std::string comp, std::string mod) : Car(comp, mod), PassengerCar(comp, mod), Bus(comp, mod) {
+        std::cout << comp << " - Minivan class" << std::endl;
+        std::cout << mod << " - Minivan class" << std::endl;
+    };
+};
+
+//Task 3----------------------------------
+class Fraction {
+private:
+    int num;
+public:
+    Fraction(int x) {
+        num = x;
+    }
+
+    float getResult(int x) {
+        if (num == 0)
+            return -1;
+        else
+            return x / num;
+    }
+
+    int getNumerator() const { 
+        return num;
+    }
+};
+
+Fraction operator + (const Fraction& num1, const Fraction& num2) {
+    return Fraction(num1.getNumerator() + num2.getNumerator());
+}
+Fraction operator - (const Fraction& num1, const Fraction& num2) {
+    return Fraction(num1.getNumerator() - num2.getNumerator());
+}
+Fraction operator * (const Fraction& num1, const Fraction& num2) {
+    return Fraction(num1.getNumerator() * num2.getNumerator());
+}
+Fraction operator / (const Fraction& num1, const Fraction& num2) {
+    return Fraction(num1.getNumerator() / num2.getNumerator());
+}
+Fraction operator - (const Fraction& num1) {
+    return Fraction(-num1.getNumerator());
+}
+bool operator > (const Fraction& num1, const Fraction& num2) {
+    return num1.getNumerator() > num2.getNumerator();
+}
+bool operator >= (const Fraction& num1, const Fraction& num2) {
+    return num1.getNumerator() >= num2.getNumerator();
+}
+bool operator < (const Fraction& num1, const Fraction& num2) {
+    return num1.getNumerator() < num2.getNumerator();
+}
+bool operator <= (const Fraction& num1, const Fraction& num2) {
+    return num1.getNumerator() <= num2.getNumerator();
+}
+bool operator == (const Fraction& num1, const Fraction& num2) {
+    return num1.getNumerator() == num2.getNumerator();
+}
+bool operator != (const Fraction& num1, const Fraction& num2) {
+    return num1.getNumerator() != num2.getNumerator();
+}
+
+//Task 4----------------------------------
+enum point { ONE_P = 1, TWO_P = 2, THREE_P = 3, FOUR_P = 4, FIVE_P = 5, SIX_P = 6, SEVEN_P = 7, EIGHT_P = 8, NINE_P = 9, TEN_P = 10, ELEVEN_P = 11 , NONE = 0};
+enum e_dignity {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE, BACK};
+enum e_suit {DIAMONDS, HEARTS, CLUBS, SPADES, UNKNOWN};
+
+class bj_card {
+private:
+    point c_point;
+	e_dignity c_dignity;
+	e_suit c_suit;
+    bool c_state;
+
+public:
+    bj_card(point p, e_dignity d, e_suit s, bool b) {
+        c_point = p;
+        c_dignity = d;
+        c_suit = s;
+        c_state = b;
+    }
+    void Flip() {
+        if (c_dignity == BACK) {
+            c_dignity = JACK;
+            c_point = TEN_P;
+            c_suit = DIAMONDS;
+            c_state = true;
+        }
+        else {
+            c_dignity = BACK;
+            c_point = NONE;
+            c_suit = UNKNOWN;
+            c_state = false;
+        }
+    }
+    point getValue() {
+        return c_point;
+    }
+};
+
+int main()
+{
+    Minivan fig("Ford", "Focus");
+    
+    Fraction var1(10);
+    Fraction var2(5);
+    Fraction sumFraction = var1 + var2;
+    Fraction minusFraction = var1 - var2;
+    Fraction umnFraction = var1 * var2;
+    Fraction delFraction = var1 / var2;
+    Fraction bolFraction = var1 > var2;
+    Fraction menFraction = var1 < var2;
+    Fraction ravFraction = var1 == var2;
+    Fraction qFraction = -var1;
+    std::cout << "+: " << sumFraction.getNumerator() << std::endl;
+    std::cout << "-: " << minusFraction.getNumerator() << std::endl;
+    std::cout << "*: " << umnFraction.getNumerator() << std::endl;
+    std::cout << "/: " << delFraction.getNumerator() << std::endl;
+    std::cout << ">: " << bolFraction.getNumerator() << std::endl;
+    std::cout << "<: " << menFraction.getNumerator() << std::endl;
+    std::cout << "==: " << ravFraction.getNumerator() << std::endl;
+    std::cout << "-: " << qFraction.getNumerator() << std::endl;
+
+    bj_card card(ONE_P, BACK, DIAMONDS, true);
+    card.Flip();
+    std::cout << card.getValue();
+
+    return 0;
+}
