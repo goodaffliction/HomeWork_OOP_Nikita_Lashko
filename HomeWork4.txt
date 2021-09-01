@@ -1,0 +1,150 @@
+#include <iostream>
+#include "ArrayInt.h"
+#include <vector>
+
+//Task 3--------------------------------------------
+enum point { ONE_P = 1, TWO_P = 2, THREE_P = 3, FOUR_P = 4, FIVE_P = 5, SIX_P = 6, SEVEN_P = 7, EIGHT_P = 8, NINE_P = 9, TEN_P = 10, ELEVEN_P = 11, NONE = 0 };
+enum e_dignity { TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE, BACK };
+enum e_suit { DIAMONDS, HEARTS, CLUBS, SPADES, UNKNOWN };
+
+class bj_Card {
+private:
+    point c_point;
+    e_dignity c_dignity;
+    e_suit c_suit;
+    bool c_state;
+
+public:
+    bj_Card(point p, e_dignity d, e_suit s, bool b) {
+        c_point = p;
+        c_dignity = d;
+        c_suit = s;
+        c_state = b;
+    }
+    void Flip() {
+        if (c_dignity == BACK) {
+            c_dignity = JACK;
+            c_point = TEN_P;
+            c_suit = DIAMONDS;
+            c_state = true;
+        }
+        else {
+            c_dignity = BACK;
+            c_point = NONE;
+            c_suit = UNKNOWN;
+            c_state = false;
+        }
+    }
+    point getValue() const {
+        return c_point;
+    }
+    e_dignity getDignity() const {
+        return c_dignity;
+    }
+};
+class bj_Hand {
+private:
+    std::vector<bj_Card*> m_Cards;
+public:
+    void Add(bj_Card* pCard) {
+        m_Cards.push_back(pCard);
+    }
+
+    void Clear() {
+        m_Cards.clear();
+    }
+
+    int GetTotal() const {
+        int sum = 0;
+
+        for (int i = 0; i < m_Cards.size(); i++) {
+            if (m_Cards[i]->getDignity() == ACE) {
+                sum += ELEVEN_P;
+                if (sum > 21) {
+                    sum = sum - ELEVEN_P + ONE_P;
+                }
+            }
+            else
+                sum += m_Cards[i]->getValue();
+            
+        }
+        return sum;
+    }
+};
+
+int main()
+{
+    //for task 3 check
+    bj_Card card1(ELEVEN_P, ACE, DIAMONDS, true);
+    bj_Card card2(TEN_P, QUEEN, HEARTS, true);
+    bj_Hand hand;
+    hand.Add(&card1);
+    hand.Add(&card2);
+    std::cout << hand.GetTotal();
+
+    //for task 1 check
+    srand(unsigned(time(nullptr)));
+
+    ArrayInt myArray(10);
+    myArray.fillArray();
+    myArray.printArray();
+    myArray.insertBefore(300, 5);
+    myArray.printArray();
+    myArray.deleteByData(5);
+    myArray.printArray();
+    myArray.myPop_Front();
+    myArray.printArray();
+    myArray.myPop_Back();
+    myArray.printArray();
+    myArray.sortArray();
+    myArray.printArray();
+
+
+    //Task 2--------------------------------------
+    std::vector<int> myVector;
+    int size = 20;
+    int count = size;
+    //random init
+    for (int i = 0; i < size; i++)
+        myVector.push_back(rand() % 10 + 1);
+
+    //to print a start vector
+    for (int i = 0; i < myVector.size(); i++)
+        std::cout << myVector[i] << " ";
+    std::cout << std::endl;
+
+    //search and delete the same numbers, O(n) = n*n
+    for (int i = 0; i < myVector.size(); i++)
+        for (int j = i; j < myVector.size() - 1; j++) {
+            if (myVector[i] == myVector[j + 1]) {
+                if (myVector[j + 1] == myVector[myVector.size() - 1] && (j + 1) != (myVector.size() - 1)) {
+                    
+                    myVector.pop_back();
+                    count--;
+
+                    int temp = myVector[j + 1];
+                    myVector[j + 1] = myVector[myVector.size() - 1];
+                    myVector[myVector.size() - 1] = temp;
+
+                    myVector.pop_back();
+                    count--; 
+                }
+                else {
+                    int temp = myVector[j + 1];
+                    myVector[j + 1] = myVector[myVector.size() - 1];
+                    myVector[myVector.size() - 1] = temp;
+
+                    myVector.pop_back();
+                    count--; 
+                }  
+            }
+        }
+
+    for (int i = 0; i < myVector.size(); i++)
+        std::cout << myVector[i] << " ";
+    std::cout << std::endl;
+
+    std::cout << "The count of different elements: " << count << std::endl;
+
+    return 0;
+}
