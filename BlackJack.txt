@@ -1,0 +1,114 @@
+#pragma once
+#include <vector>
+
+class bj_Card {
+private:
+    e_dignity c_Dignity;
+    e_suit c_Suit;
+    bool m_IsFaceUp;
+
+public:
+    enum e_dignity {
+        ACE = 1, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN,
+        JACK, QUEEN, KING, BACK
+    };
+    enum e_suit { DIAMONDS, HEARTS, CLUBS, SPADES, UNKNOWN };
+
+    bj_Card(e_dignity d, e_suit s, bool b) {
+        c_Dignity = d;
+        c_Suit = s;
+        m_IsFaceUp = b;
+    }
+    void Card::Flip()
+    {
+        m_IsFaceUp = !(m_IsFaceUp);
+    }
+
+    int Card::GetValue() const {
+        int value = 0;
+        if (m_IsFaceUp) {
+            value = e_dignity;
+            if (value > 10)
+                value = 10;
+        }
+        return value;
+    }
+};
+
+class bj_Hand {
+protected:
+    vector<Card*> m_Cards;
+public:
+    Hand() {
+        m_Cards.reserve(7);
+    };
+
+    virtual ~Hand() {
+        Clear();
+    };
+
+    void Add(Card* pCard) {
+        m_Cards.push_back(pCard);
+    };
+
+    void Clear() {
+        vector<Card*>::iterator iter = m_Cards.begin();
+        for (iter = m_Cards.begin(); iter != m_Cards.end(); ++iter) {
+            delete* iter;
+            *iter = 0;
+        }
+        m_Cards.clear();
+    };
+
+    int GetTotal() const {
+        if (m_Cards.empty()) return 0;
+
+        if (m_Cards[0]->GetValue() == 0) return 0;
+
+        int total = 0;
+        vector<Card*>::const_iterator iter;
+        for (iter = m_Cards.begin(); iter != m_Cards.end(); ++iter)
+            total += (*iter)->GetValue();
+
+        bool containsAce = false;
+        for (iter = m_Cards.begin(); iter != m_Cards.end(); ++iter)
+            if ((*iter)->GetValue() == Card::ACE)
+                containsAce = true;
+
+        if (containsAce && total <= 11)
+            total += 10;
+
+        return total;
+    };
+};
+
+class GenericPlayer {
+private:
+    std::string Name;
+public:
+    GenericPlayer(std::string name) : Name(name) {}
+    bj_Hand playerHand;
+
+    std::string getName() const {
+        return Name;
+    }
+    void Bust() {
+        std::cout << getName() << ", you lose!" << std::endl;
+    };
+
+    virtual bool IsHitting() {
+        if (playerHand.GetTotal < 21) 
+            return true;
+        else 
+            return false;
+    };
+    bool IsBoosted() {
+        if (playerHand.GetTotal > 21) {
+            Bust();
+            return true;
+        }
+        else
+            return false;
+    }
+};
+

@@ -1,0 +1,81 @@
+#include <iostream>
+
+//Task 1
+template <class T> 
+class Pair1 {
+private:
+    T one;
+    T two;
+public:
+    Pair1(T a, T b) :one(a), two(b) {}
+    T first() const {
+        return one;
+    }
+    T second() const {
+        return two;
+    };
+};
+
+//Task 2
+template <class T, class S> 
+class Pair {
+private:
+    T one;
+    S two;
+public:
+    Pair(T a, S b) {
+        this->one = a;
+        this->two = b;
+    }
+    T first() const {
+        return one;
+    }
+    S second() const {
+        return two;
+    }
+};
+
+//Task 3 
+template <class T> 
+class Pair<std::string, T> {
+private:
+    std::string one;
+    T two;
+public:
+    Pair(std::string a, T b){
+        this->one = a;
+        this->two = b;
+    }
+    std::string first() const {
+        return one;
+    }
+    T second() const {
+        return two;
+    }
+};
+
+template <class T>
+class StringValuePair : public Pair<std::string, T> {
+public:
+    StringValuePair(std::string Str, T var) : Pair<std::string, T>(Str, var) {}
+};
+
+int main()
+{
+    //Task 1 check
+    Pair1<int> p1(6, 9);
+    std::cout << "Pair: " << p1.first() << ' ' << p1.second() << '\n';
+    const Pair1<double> p2(3.4, 7.8);
+    std::cout << "Pair: " << p2.first() << ' ' << p2.second() << '\n';
+
+    //Task 2 check
+    Pair<int, double> temp1(6, 7.8);
+    std::cout << "Pair: " << temp1.first() << ' ' << temp1.second() << '\n';
+    const Pair<double, int> temp2(3.4, 5);
+    std::cout << "Pair: " << temp2.first() << ' ' << temp2.second() << '\n';
+
+    StringValuePair<int> svp("Amazing", 7);
+    std::cout << "Pair: " << svp.first() << ' ' << svp.second() << '\n';
+
+    return 0;
+}
