@@ -1,0 +1,48 @@
+#include <iostream>
+#include <sstream>
+
+//Task 2---------------------------------------------------------------------
+template <class _Elem, class _Traits> 
+std::basic_ostream<_Elem, _Traits>& __CLRCALL_OR_CDECL endll(
+    std::basic_ostream<_Elem, _Traits>& _Ostr) { // insert newline and flush stream
+    _Ostr.put(_Ostr.widen('\n'));
+    _Ostr.put(_Ostr.widen('\n'));
+    _Ostr.flush();
+    return _Ostr;
+}
+
+int main()
+{
+    //Task 1---------------------------------------------------------------------
+    int number;
+    std::stringstream myStream;
+    std::string myString;
+    std::cout << "Enter the number: " << std::endl;
+
+    std::cin >> number;
+    if (!number)
+        std::cerr << "Incorrect input, please enter correct data." << std::endl;
+    else {
+        myStream << number;
+        myStream >> myString;
+        std::cout << myString;
+    }
+    std::cout << std::endl;
+
+    //Почему эта реализация не работает, не можете подсказать, что не так?
+    //Цикл не остнавливается на 35-й строке, если ввести некоректные данные.
+    /*do  {
+        std::cin >> number;
+        if (!number)
+            std::cerr << "Incorrect input, please enter correct data." << std::endl;
+    } while (!number);
+        myStream << number;
+        myStream >> myString;
+        std::cout << myString;*/
+
+    //for task2
+    std::cout << "First line" << endll;
+    std::cout << "Second line" << endll;
+
+    return 0;
+}
