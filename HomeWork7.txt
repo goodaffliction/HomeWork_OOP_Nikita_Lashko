@@ -1,0 +1,79 @@
+#include <iostream>
+#include <memory>
+
+//Task 1--------------------------------------------------------------------------
+class Date {
+private:
+    int day;
+    int month;
+    int year;
+public:
+    Date(int x, int y, int z) : day(x), month(y), year(z) {}
+
+    int getDay() const {
+        return day;
+    }
+    int getMonth() const {
+        return month;
+    }
+    int getYear() const {
+        return year;
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, const Date& date);
+};
+
+std::ostream& operator<< (std::ostream& out, const Date& date)  {
+    out << "Date: " << date.day << ". " << date.month << ". " << date.year << "\n";
+    return out;
+}
+
+//Task 2--------------------------------------------------------------------------
+Date lateDate(const std::unique_ptr<Date>& date1, const std::unique_ptr<Date>& date2) {
+    if ((date1->getYear() * 365 + date1->getMonth() * 30 + date1->getDay()) >
+        (date2->getYear() * 365 + date2->getMonth() * 30 + date2->getDay()))
+        return *date2;
+    else return *date1;
+}
+
+void moveDate(std::unique_ptr<Date>& date1, std::unique_ptr<Date>& date2) {
+    std::unique_ptr<Date> templ = nullptr;
+    templ = std::move(date1);
+    date1 = std::move(date2);
+    date2 = std::move(templ);
+}
+
+int main()  {
+    //for task 1------------------------------------------------------
+    std::unique_ptr<Date> today = std::make_unique<Date>(11, 9, 2021);
+    std::unique_ptr<Date> date = nullptr;
+    today->getDay();
+    today->getMonth();
+    today->getYear();
+
+    if (today == nullptr) std::cout << "Not today" << std::endl;
+        else std::cout << *today << std::endl;
+    if (date == nullptr) std::cout << "Not today" << std::endl;
+        else std::cout << *date << std::endl;
+
+    date = std::move(today);
+
+    if (today == nullptr) std::cout << "Not today" << std::endl;
+         else std::cout << *today << std::endl;
+    if (date == nullptr) std::cout << "Not today" << std::endl;
+        else std::cout << *date << std::endl;
+    std::cout << std::endl;
+
+    //for task 2------------------------------------------------------
+    std::unique_ptr<Date> date1 = std::make_unique<Date>(3, 1, 2021);
+    std::unique_ptr<Date> date2 = std::make_unique<Date>(2, 1, 2021);
+
+    std::cout << lateDate(date1, date2) << std::endl;
+
+    std::cout << "Date1: " << *date1 << std::endl;
+    std::cout << "Date2: " << *date2 << std::endl;
+    moveDate(date1, date2);
+    std::cout << "Date1: " << *date1 << std::endl;
+    std::cout << "Date2: " << *date2 << std::endl;
+    return 0;
+}
