@@ -1,0 +1,70 @@
+#include <iostream>
+
+//Task 1---------------------------------------------------
+class myDiv {
+private:
+    float divident;
+    float divider;
+public:
+    myDiv(float x, float y) : divident(x), divider(y) {}
+    float division() {
+        if (divider == 0) {
+            throw "cannot be divisible by zero";
+        }
+        return divident / divider;
+    }
+};
+
+//Task 2---------------------------------------------------
+class Ex {
+private:
+    float x;
+public:
+    Ex(float iks) : x(iks) {}
+    float Get() const {
+        return x;
+    }
+};
+
+class Bar {
+private:
+    float y;
+public:
+    Bar() :y(0) {}
+    void Set(float a) {
+        if ((y + a) > 100){
+            Ex exObj(y * a);
+            throw exObj;
+        }
+        else
+            y = a;
+    }
+};
+
+int main()
+{
+    //For task 1---------------------------------------------------
+    myDiv divObj(2, 0);
+
+    try {
+        std::cout << "Division: " << divObj.division() << std::endl;
+    }
+    catch (const char* except) {
+        std::cerr << "Error: " << except << std::endl;
+    }
+
+    //For task 2---------------------------------------------------
+    Bar barObj;
+    float num;
+    do {
+        std::cin >> num;
+        try{
+            barObj.Set(num);
+        }
+        catch(const Ex var){
+            std::cerr << "Error: " << var.Get() << std::endl;
+        }
+    } while (num != 0);
+
+    return 0;
+}
